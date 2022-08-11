@@ -1,0 +1,45 @@
+{% set name = "poetry2conda" %}
+{% set version = "0.3.0" %}
+
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
+source:
+  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/poetry2conda-{{ version }}.tar.gz
+  sha256: 574b6295ff877ff8fb56fe2034160ff9ee9db55a3f3c2faec65458e69125491b
+
+build:
+  entry_points:
+    - poetry2conda = poetry2conda.convert:main
+  noarch: python
+  script: {{ PYTHON }} -m pip install . -vv
+  number: 0
+
+requirements:
+  host:
+    - pip
+    - python >=3.6,<4.0
+  run:
+    - poetry-semver >=0.1.0,<0.2.0
+    - python >=3.6,<4.0
+    - toml >=0.10.0,<0.11.0
+
+test:
+  imports:
+    - poetry2conda
+  commands:
+    - pip check
+    - poetry2conda --help
+  requires:
+    - pip
+
+about:
+  home: https://github.com/dojeda/poetry2conda
+  summary: Convert pyproject.toml to environment.yaml
+  license: MIT
+  license_file: LICENSE
+
+extra:
+  recipe-maintainers:
+    - cshaley
